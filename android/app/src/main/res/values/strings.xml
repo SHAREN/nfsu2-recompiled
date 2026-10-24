@@ -102,6 +102,7 @@
     <string name="diagnostics_create_report_failed">Could not create the report.</string>
     <string name="diagnostics_create_download_failed">Could not create the file in Downloads.</string>
     <string name="diagnostics_write_download_failed">Could not write to Downloads.</string>
+    <string name="diagnostics_download_location">Downloads/NFSU2/%1$s</string>
 
     <string name="option_resolution_title">Internal resolution</string>
     <string name="option_resolution_native">Native · maximum quality</string>

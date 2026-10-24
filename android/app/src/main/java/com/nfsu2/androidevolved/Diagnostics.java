@@ -167,7 +167,7 @@ final class Diagnostics {
             resolver.delete(target, null, null);
             throw error;
         }
-        return "Descargas/NFSU2/" + report.getName();
+        return context.getString(R.string.diagnostics_download_location, report.getName());
     }
 
     private static void add(ZipOutputStream zip, String name, byte[] data) throws IOException {
