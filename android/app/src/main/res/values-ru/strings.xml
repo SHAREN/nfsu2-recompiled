@@ -126,4 +126,95 @@
     <string name="option_textures_title">Сжатые текстуры</string>
     <string name="option_textures_auto">Автоматически · GPU при поддержке</string>
     <string name="option_textures_cpu">Преобразование на CPU · совместимость</string>
+    <string name="common_close">Закрыть</string>
+
+    <string name="game_status_checking_storage">Проверяем внутреннюю память/nfsu2…</string>
+    <string name="game_status_data_accessible">Данные доступны: внутренняя память/nfsu2</string>
+    <string name="game_status_vulkan_active">Vulkan 1.1: вывод изображения активен</string>
+    <string name="game_status_crt_pending">Ожидание запуска CRT</string>
+    <string name="game_status_crt_entry">Запускаем CRT-вход игры…</string>
+    <string name="game_status_guest_stopped">Запуск игры остановлен: %1$s</string>
+    <string name="game_status_custom_driver_failed">Не удалось загрузить драйвер Vulkan %1$s. Выберите системный драйвер в лаунчере.</string>
+    <string name="game_status_driver_hint">Используйте «Проверить драйвер» в лаунчере, чтобы увидеть, чего не хватает.</string>
+    <string name="game_storage_permission">Разрешите доступ к файлам, чтобы прочитать папку nfsu2 во внутренней памяти.</string>
+
+    <string name="tilt_no_accelerometer">На этом устройстве нет акселерометра.</string>
+    <string name="tilt_enable">Управлять наклоном телефона</string>
+    <string name="tilt_invert">Инвертировать направление</string>
+    <string name="tilt_sensitivity">Чувствительность: %1$s×</string>
+    <string name="tilt_help">Держите телефон в обычном игровом положении при применении. Наклон управляет поворотом влево/вправо; педали остаются сенсорными.</string>
+    <string name="tilt_title">Управление наклоном</string>
+    <string name="tilt_apply_calibrate">Применить и откалибровать</string>
+
+    <string name="text_input_hint">Имя, почта или пароль</string>
+    <string name="text_input_replace_current">Заменить текущее имя</string>
+    <string name="text_input_title">Ввод текста в игре</string>
+    <string name="text_input_write">Ввести</string>
+    <string name="text_input_validation">До 40 символов: латинские буквы без диакритики, цифры и . , - _ @ + ! # $ % &amp; * ( ) = ? / ; :</string>
+
+    <string name="controls_content_description">Игровое управление</string>
+    <string name="controls_toolbar_restore">СБРОСИТЬ</string>
+    <string name="controls_toolbar_save">СОХРАНИТЬ</string>
+    <string name="controls_toolbar_cancel">ОТМЕНА</string>
+    <string name="controls_toolbar_options">НАСТРОЙКИ</string>
+    <string name="controls_options_title">Настройки управления</string>
+    <string name="controls_option_style">Стиль: классический / Xbox / PlayStation</string>
+    <string name="controls_option_tilt">Управление наклоном</string>
+    <string name="controls_option_fps">Ограничение FPS</string>
+    <string name="controls_option_save_layout">Сохранить раскладку с именем</string>
+    <string name="controls_option_load_layout">Загрузить сохранённую раскладку</string>
+    <string name="controls_style_title">Стиль управления</string>
+    <string name="controls_style_classic">Классический · стрелки и педали</string>
+    <string name="controls_style_xbox">Xbox · руль и A / B / X / Y</string>
+    <string name="controls_style_playstation">PlayStation · руль и × / ○ / □ / △</string>
+    <string name="layout_name_hint">Название раскладки</string>
+    <string name="layout_save_racing_title">Сохранить гоночную раскладку</string>
+    <string name="layout_save_menu_title">Сохранить раскладку меню</string>
+    <string name="layout_name_required">Введите название</string>
+    <string name="layout_saved">Раскладка сохранена: %1$s</string>
+    <string name="layout_save_failed">Не удалось сохранить раскладку</string>
+    <string name="layout_none_saved">Для этого режима пока нет сохранённых раскладок</string>
+    <string name="layout_load_title">Загрузить раскладку</string>
+    <string name="layout_load_failed">Не удалось загрузить раскладку</string>
+
+    <string name="gpu_probe_checking">Проверяем драйвер Vulkan…</string>
+    <string name="gpu_probe_timeout">Проверка драйвера превысила 20 секунд</string>
+    <string name="gpu_probe_execution_failed">Не удалось выполнить проверку: %1$s</string>
+    <string name="gpu_probe_open_selected_failed">Не удалось открыть выбранный драйвер</string>
+    <string name="gpu_probe_no_gpu">Не найдено устройство с поддержкой Vulkan</string>
+
+    <string name="driver_error_create_folder">Не удалось создать папку драйвера.</string>
+    <string name="driver_error_open_zip">Не удалось открыть ZIP.</string>
+    <string name="driver_error_missing_meta">В ZIP драйвера отсутствует meta.json.</string>
+    <string name="driver_error_invalid_library_name">Некорректное значение libraryName.</string>
+    <string name="driver_error_android_too_old">Для этого драйвера нужна более новая версия Android.</string>
+    <string name="driver_error_invalid_name">Некорректное название драйвера.</string>
+    <string name="driver_error_install">Не удалось установить драйвер.</string>
+    <string name="driver_error_install_package">Не удалось установить пакет драйвера.</string>
+    <string name="driver_error_multiple_meta">Найдено несколько meta.json; пакет неоднозначен.</string>
+    <string name="driver_error_protect_library">Не удалось защитить библиотеку драйвера.</string>
+    <string name="driver_error_invalid_path">Некорректный путь драйвера.</string>
+    <string name="driver_error_zip_too_many_files">В ZIP слишком много файлов.</string>
+    <string name="driver_error_zip_invalid_paths">В ZIP есть некорректные или повторяющиеся пути.</string>
+    <string name="driver_error_create_archive_folder">Не удалось создать папку при распаковке драйвера.</string>
+    <string name="driver_error_package_too_large">Пакет драйвера слишком большой.</string>
+    <string name="driver_error_not_arm64">Драйвер должен быть библиотекой Android ARM64 (.so), а не библиотекой ПК или 32-битной сборкой.</string>
+    <string name="driver_error_unexpected_link">В пакете обнаружена неожиданная символическая ссылка.</string>
+    <string name="driver_error_delete">Не удалось удалить %1$s</string>
+    <string name="diagnostics_summary_apk_abi">ABI APK: %1$s</string>
+    <string name="diagnostics_summary_phone">Телефон: %1$s %2$s</string>
+    <string name="diagnostics_summary_android">Android: %1$s (API %2$d)</string>
+    <string name="diagnostics_summary_soc">SoC: %1$s</string>
+    <string name="diagnostics_summary_vulkan_driver">Драйвер Vulkan: %1$s</string>
+    <string name="diagnostics_date">Дата: %1$s</string>
+    <string name="diagnostics_abi">ABI: %1$s</string>
+    <string name="diagnostics_options">Настройки:</string>
+    <string name="issue_unexpected_close">неожиданное закрытие</string>
+    <string name="issue_what_happened">### Что произошло</string>
+    <string name="issue_steps_to_reproduce">### Как воспроизвести</string>
+    <string name="issue_device">### Устройство</string>
+    <string name="issue_full_log">### Полный журнал\nСохранён на телефоне в **%1$s**. Если возможно, прикрепите его здесь: перетащите файл или нажмите “Paste, drop, or click to add files”.</string>
+    <string name="issue_technical_summary">### Техническая сводка</string>
+    <string name="issue_last_frame">Последний кадр: %1$s</string>
+    <string name="issue_last_game_lines">--- последние строки журнала игры ---</string>
 </resources>

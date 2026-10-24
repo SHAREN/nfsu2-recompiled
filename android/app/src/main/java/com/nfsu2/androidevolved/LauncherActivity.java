@@ -327,7 +327,7 @@ public final class LauncherActivity extends Activity {
                     GpuDrivers.Driver driver = GpuDrivers.selected(this);
                     if (driver == null) return;
                     try { GpuDrivers.remove(this, driver); refreshOptions(); }
-                    catch (java.io.IOException error) { message(getString(R.string.vulkan_driver), error.getMessage()); }
+                    catch (java.io.IOException error) { message(getString(R.string.vulkan_driver), GpuDrivers.errorMessage(this, error)); }
                 })
                 .setNegativeButton(R.string.common_back, null).show();
     }
@@ -336,6 +336,15 @@ public final class LauncherActivity extends Activity {
         playAfterProbe = thenPlay;
         play.setEnabled(false);
         startActivityForResult(new Intent(this, GpuProbeActivity.class), REQUEST_DRIVER_PROBE);
+    }
+
+    private String localizeProbeError(String error) {
+        if (error.equals("No se pudo abrir el driver seleccionado")) return getString(R.string.gpu_probe_open_selected_failed);
+        if (error.equals("No se encontró una GPU Vulkan")) return getString(R.string.gpu_probe_no_gpu);
+        String prefix = "No se pudo ejecutar la prueba: ";
+        if (error.startsWith(prefix)) return getString(R.string.gpu_probe_execution_failed, error.substring(prefix.length()));
+        if (error.equals("La prueba del driver excedió 20 segundos")) return getString(R.string.gpu_probe_timeout);
+        return error;
     }
 
     private void showDriverReport(String report) {
@@ -348,7 +357,7 @@ public final class LauncherActivity extends Activity {
             // probe checks may still run the game (issue #1107), so offer it.
             boolean wantedToPlay = playAfterProbe && !failed;
             playAfterProbe = false;
-            String text = failed ? getString(R.string.driver_test_failed, gpu.optString("probeError", getString(R.string.driver_test_start_error)))
+            String text = failed ? getString(R.string.driver_test_failed, localizeProbeError(gpu.optString("probeError", getString(R.string.driver_test_start_error))))
                     : getString(R.string.driver_report_gpu, gpu.optString("gpu")) + "\n"
                       + getString(R.string.driver_report_vulkan, gpu.optString("vulkan")) + "\n"
                       + getString(R.string.driver_report_driver, gpu.optString("driverName", "—"), gpu.optString("driverInfo", "")) + "\n"
@@ -381,7 +390,7 @@ public final class LauncherActivity extends Activity {
                         status.setText(getString(R.string.driver_imported, driver.name));
                     });
                 } catch (Exception error) {
-                    main.post(() -> { refresh(); message(getString(R.string.vulkan_driver), getString(R.string.driver_import_failed, error.getMessage())); });
+                    main.post(() -> { refresh(); message(getString(R.string.vulkan_driver), getString(R.string.driver_import_failed, GpuDrivers.errorMessage(this, error))); });
                 }
             });
         }

@@ -126,4 +126,95 @@
     <string name="option_textures_title">Compressed textures</string>
     <string name="option_textures_auto">Automatic · GPU when supported</string>
     <string name="option_textures_cpu">Convert on CPU · compatibility</string>
+    <string name="common_close">Close</string>
+
+    <string name="game_status_checking_storage">Checking internal storage/nfsu2…</string>
+    <string name="game_status_data_accessible">Data accessible: internal storage/nfsu2</string>
+    <string name="game_status_vulkan_active">Vulkan 1.1: presentation active</string>
+    <string name="game_status_crt_pending">CRT boot pending</string>
+    <string name="game_status_crt_entry">Running game CRT entry…</string>
+    <string name="game_status_guest_stopped">Guest boot stopped: %1$s</string>
+    <string name="game_status_custom_driver_failed">Could not load Vulkan driver %1$s. Select the system driver in the launcher.</string>
+    <string name="game_status_driver_hint">Use “Test driver” in the launcher to see what is missing.</string>
+    <string name="game_storage_permission">Allow file access to read the nfsu2 folder in internal storage.</string>
+
+    <string name="tilt_no_accelerometer">This device has no accelerometer.</string>
+    <string name="tilt_enable">Steer by tilting the phone</string>
+    <string name="tilt_invert">Invert direction</string>
+    <string name="tilt_sensitivity">Sensitivity: %1$s×</string>
+    <string name="tilt_help">Hold the phone in your normal playing position when applying. Tilting controls left/right; the pedals remain touch controls.</string>
+    <string name="tilt_title">Tilt steering</string>
+    <string name="tilt_apply_calibrate">Apply and calibrate</string>
+
+    <string name="text_input_hint">Name, email or password</string>
+    <string name="text_input_replace_current">Replace current name</string>
+    <string name="text_input_title">Type in the game</string>
+    <string name="text_input_write">Type</string>
+    <string name="text_input_validation">Up to 40 characters: unaccented letters, numbers and . , - _ @ + ! # $ % &amp; * ( ) = ? / ; :</string>
+
+    <string name="controls_content_description">Game controls</string>
+    <string name="controls_toolbar_restore">RESTORE</string>
+    <string name="controls_toolbar_save">SAVE</string>
+    <string name="controls_toolbar_cancel">CANCEL</string>
+    <string name="controls_toolbar_options">OPTIONS</string>
+    <string name="controls_options_title">Control options</string>
+    <string name="controls_option_style">Style: classic / Xbox / PlayStation</string>
+    <string name="controls_option_tilt">Tilt steering</string>
+    <string name="controls_option_fps">FPS limit</string>
+    <string name="controls_option_save_layout">Save named layout</string>
+    <string name="controls_option_load_layout">Load custom layout</string>
+    <string name="controls_style_title">Driving style</string>
+    <string name="controls_style_classic">Classic · arrows and pedals</string>
+    <string name="controls_style_xbox">Xbox · wheel and A / B / X / Y</string>
+    <string name="controls_style_playstation">PlayStation · wheel and × / ○ / □ / △</string>
+    <string name="layout_name_hint">Layout name</string>
+    <string name="layout_save_racing_title">Save driving layout</string>
+    <string name="layout_save_menu_title">Save menu layout</string>
+    <string name="layout_name_required">Enter a name</string>
+    <string name="layout_saved">Layout saved: %1$s</string>
+    <string name="layout_save_failed">Could not save the layout</string>
+    <string name="layout_none_saved">There are no saved layouts for this mode yet</string>
+    <string name="layout_load_title">Load layout</string>
+    <string name="layout_load_failed">Could not load the layout</string>
+
+    <string name="gpu_probe_checking">Checking Vulkan driver…</string>
+    <string name="gpu_probe_timeout">The driver test exceeded 20 seconds</string>
+    <string name="gpu_probe_execution_failed">Could not run the test: %1$s</string>
+    <string name="gpu_probe_open_selected_failed">Could not open the selected driver</string>
+    <string name="gpu_probe_no_gpu">No Vulkan GPU was found</string>
+
+    <string name="driver_error_create_folder">Could not create the driver folder.</string>
+    <string name="driver_error_open_zip">Could not open the ZIP.</string>
+    <string name="driver_error_missing_meta">The driver ZIP does not contain meta.json.</string>
+    <string name="driver_error_invalid_library_name">libraryName is invalid.</string>
+    <string name="driver_error_android_too_old">This driver requires a newer Android version.</string>
+    <string name="driver_error_invalid_name">Invalid driver name.</string>
+    <string name="driver_error_install">Could not install the driver.</string>
+    <string name="driver_error_install_package">Could not install the driver package.</string>
+    <string name="driver_error_multiple_meta">Several meta.json files were found; the package is ambiguous.</string>
+    <string name="driver_error_protect_library">Could not protect the driver library.</string>
+    <string name="driver_error_invalid_path">Invalid driver path.</string>
+    <string name="driver_error_zip_too_many_files">The ZIP contains too many files.</string>
+    <string name="driver_error_zip_invalid_paths">The ZIP contains invalid or duplicate paths.</string>
+    <string name="driver_error_create_archive_folder">Could not create a folder while extracting the driver.</string>
+    <string name="driver_error_package_too_large">The driver package is too large.</string>
+    <string name="driver_error_not_arm64">The driver must be an Android ARM64 library (.so), not a PC or 32-bit library.</string>
+    <string name="driver_error_unexpected_link">Unexpected symbolic link in the package.</string>
+    <string name="driver_error_delete">Could not delete %1$s</string>
+    <string name="diagnostics_summary_apk_abi">APK ABI: %1$s</string>
+    <string name="diagnostics_summary_phone">Phone: %1$s %2$s</string>
+    <string name="diagnostics_summary_android">Android: %1$s (API %2$d)</string>
+    <string name="diagnostics_summary_soc">SoC: %1$s</string>
+    <string name="diagnostics_summary_vulkan_driver">Vulkan driver: %1$s</string>
+    <string name="diagnostics_date">Date: %1$s</string>
+    <string name="diagnostics_abi">ABI: %1$s</string>
+    <string name="diagnostics_options">Options:</string>
+    <string name="issue_unexpected_close">unexpected close</string>
+    <string name="issue_what_happened">### What happened</string>
+    <string name="issue_steps_to_reproduce">### Steps to reproduce</string>
+    <string name="issue_device">### Device</string>
+    <string name="issue_full_log">### Full log\nSaved on the phone at **%1$s**. If possible, attach it here: drag it in or tap “Paste, drop, or click to add files”.</string>
+    <string name="issue_technical_summary">### Technical summary</string>
+    <string name="issue_last_frame">Last frame: %1$s</string>
+    <string name="issue_last_game_lines">--- last game lines ---</string>
 </resources>
