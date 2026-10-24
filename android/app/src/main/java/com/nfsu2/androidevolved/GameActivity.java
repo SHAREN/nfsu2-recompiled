@@ -87,7 +87,7 @@ public final class GameActivity extends NativeActivity {
                     tiltEnabled=enabled.isChecked();tiltInvert=invert.isChecked();tiltSensitivity=(sensitivity.getProgress()+10)/10f;
                     options.edit().putBoolean("tilt.enabled",tiltEnabled).putBoolean("tilt.invert",tiltInvert).putFloat("tilt.sensitivity",tiltSensitivity).apply();
                     updateTiltSensor();
-                }).setNegativeButton("Cancelar",null).show();
+                }).setNegativeButton(R.string.common_cancel,null).show();
     }
     private android.hardware.input.InputManager inputManager;
     private final android.hardware.input.InputManager.InputDeviceListener gamepadListener=new android.hardware.input.InputManager.InputDeviceListener() {
@@ -155,11 +155,11 @@ public final class GameActivity extends NativeActivity {
         GameOptions.Option option=GameOptions.find(GameOptions.FPS);
         String saved=GameOptions.get(this,GameOptions.FPS);int selected=0;
         for(int i=0;i<option.values.length;i++)if(option.values[i].equals(saved))selected=i;
-        new AlertDialog.Builder(this).setTitle(option.title)
-                .setSingleChoiceItems(option.labels,selected,(dialog,which)->{
+        new AlertDialog.Builder(this).setTitle(option.title(this))
+                .setSingleChoiceItems(option.labels(this),selected,(dialog,which)->{
                     GameOptions.set(this,GameOptions.FPS,option.values[which]);
                     nativeFrameLimit(Integer.parseInt(option.values[which]));dialog.dismiss();
-                }).setNegativeButton("Cancelar",null).show();
+                }).setNegativeButton(R.string.common_cancel,null).show();
     }
     private int dp(int value) { return Math.round(value * getResources().getDisplayMetrics().density); }
     private void showTextInput() {
