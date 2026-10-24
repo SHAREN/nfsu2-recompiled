@@ -162,6 +162,9 @@
     <string name="controls_option_style">Стиль: классический / Xbox / PlayStation</string>
     <string name="controls_option_tilt">Управление наклоном</string>
     <string name="controls_option_fps">Ограничение FPS</string>
+    <string name="controls_option_show_fps">Показывать FPS</string>
+    <string name="fps_overlay_on">Вкл.</string>
+    <string name="fps_overlay_off">Выкл.</string>
     <string name="controls_option_save_layout">Сохранить раскладку с именем</string>
     <string name="controls_option_load_layout">Загрузить сохранённую раскладку</string>
     <string name="controls_style_title">Стиль управления</string>

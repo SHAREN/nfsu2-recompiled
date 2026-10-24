@@ -9,5 +9,6 @@ void setD3D9RenderSize(unsigned width,unsigned height);
 void setD3D9Compatibility(bool cpuTextures,unsigned backBuffers);
 bool d3d9RequestsSurface();
 void acknowledgeD3D9Surface(bool available);
+float d3d9PresentedFps();
 uint32_t createGuestD3D9(uint32_t sdk);
 uint32_t dispatchGuestD3D9(uint32_t token,const uint32_t* args,uint32_t* argumentCount);

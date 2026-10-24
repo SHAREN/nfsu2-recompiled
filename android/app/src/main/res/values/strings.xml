@@ -162,6 +162,9 @@
     <string name="controls_option_style">Style: classic / Xbox / PlayStation</string>
     <string name="controls_option_tilt">Tilt steering</string>
     <string name="controls_option_fps">FPS limit</string>
+    <string name="controls_option_show_fps">Show FPS</string>
+    <string name="fps_overlay_on">On</string>
+    <string name="fps_overlay_off">Off</string>
     <string name="controls_option_save_layout">Save named layout</string>
     <string name="controls_option_load_layout">Load custom layout</string>
     <string name="controls_style_title">Driving style</string>

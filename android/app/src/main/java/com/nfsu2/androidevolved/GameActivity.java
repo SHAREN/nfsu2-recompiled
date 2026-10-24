@@ -35,9 +35,18 @@ public final class GameActivity extends NativeActivity {
     private RacingControlsView touchControls;
     private boolean statusHidden;
     private Runnable statusHideTask;
+    private boolean fpsCounterEnabled;
     private static native void nativeKey(int scan, boolean down);
     private static native boolean nativeDrivingControls();
     private static native boolean nativeGamepadUsed();
+    private static native float nativePresentedFps();
+    private final Runnable updateFpsCounter = new Runnable() {
+        @Override public void run() {
+            if(!foreground||touchControls==null||!fpsCounterEnabled)return;
+            touchControls.setFps(nativePresentedFps());
+            touchControls.postDelayed(this,500);
+        }
+    };
     private final boolean[] touchKeys=new boolean[256],sentKeys=new boolean[256];
     private boolean tiltLeft,tiltRight,tiltEnabled,tiltCalibrate=true;
     private float tiltFiltered,tiltNeutral,tiltSensitivity=1;
@@ -161,6 +170,21 @@ public final class GameActivity extends NativeActivity {
                     nativeFrameLimit(Integer.parseInt(option.values[which]));dialog.dismiss();
                 }).setNegativeButton(R.string.common_cancel,null).show();
     }
+    private void showFpsCounterOptions() {
+        android.content.SharedPreferences options=getSharedPreferences("touch_layouts_v1",MODE_PRIVATE);
+        new AlertDialog.Builder(this).setTitle(R.string.controls_option_show_fps)
+                .setSingleChoiceItems(new String[]{getString(R.string.fps_overlay_on),getString(R.string.fps_overlay_off)},
+                        fpsCounterEnabled?0:1,(dialog,which)->{
+                            fpsCounterEnabled=which==0;
+                            options.edit().putBoolean("fps.overlay",fpsCounterEnabled).apply();
+                            if(touchControls!=null){
+                                touchControls.setFpsVisible(fpsCounterEnabled);
+                                touchControls.removeCallbacks(updateFpsCounter);
+                                if(fpsCounterEnabled)touchControls.post(updateFpsCounter);else touchControls.setFps(0);
+                            }
+                            dialog.dismiss();
+                        }).setNegativeButton(R.string.common_cancel,null).show();
+    }
     private int dp(int value) { return Math.round(value * getResources().getDisplayMetrics().density); }
     private void showTextInput() {
         EditText name = new EditText(this);
@@ -200,7 +224,7 @@ public final class GameActivity extends NativeActivity {
         tiltSensor=tiltSensors==null?null:tiltSensors.getDefaultSensor(android.hardware.Sensor.TYPE_ACCELEROMETER);
         android.content.SharedPreferences options=getSharedPreferences("touch_layouts_v1",MODE_PRIVATE);
         tiltEnabled=options.getBoolean("tilt.enabled",false);tiltInvert=options.getBoolean("tilt.invert",false);
-        tiltSensitivity=options.getFloat("tilt.sensitivity",1);
+        tiltSensitivity=options.getFloat("tilt.sensitivity",1);fpsCounterEnabled=options.getBoolean("fps.overlay",false);
         getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         android.view.Display display=getWindowManager().getDefaultDisplay();
         android.view.Display.Mode current=display.getMode();float refresh=60;
@@ -238,7 +262,8 @@ public final class GameActivity extends NativeActivity {
         statusWindow = new PopupWindow(status, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, false);
         statusWindow.setTouchable(false);
-        touchControls = new RacingControlsView(this, this::setTouchKey, this::showTextInput,this::showTiltOptions,this::showFrameLimitOptions);
+        touchControls = new RacingControlsView(this, this::setTouchKey, this::showTextInput,this::showTiltOptions,this::showFrameLimitOptions,this::showFpsCounterOptions);
+        touchControls.setFpsVisible(fpsCounterEnabled);
         touchControls.setPointer(GameActivity::nativePointer);
         controlsWindow = new PopupWindow(touchControls, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, false);
@@ -323,7 +348,7 @@ public final class GameActivity extends NativeActivity {
         updateTiltSensor();
         if(inputManager!=null)inputManager.unregisterInputDeviceListener(gamepadListener);
         if (statusWindow != null) statusWindow.dismiss();
-        if (touchControls != null) {touchControls.removeCallbacks(updateControlMode);touchControls.releaseAll();}
+        if (touchControls != null) {touchControls.removeCallbacks(updateControlMode);touchControls.removeCallbacks(updateFpsCounter);touchControls.releaseAll();}
         if (controlsWindow != null) controlsWindow.dismiss();
         super.onPause();
     }
@@ -333,7 +358,10 @@ public final class GameActivity extends NativeActivity {
         holdLanBroadcasts(true);
         updateTiltSensor();
         if(inputManager!=null){inputManager.registerInputDeviceListener(gamepadListener,null);updateGamepads();}
-        if(touchControls!=null) {touchControls.removeCallbacks(updateControlMode);touchControls.post(updateControlMode);}
+        if(touchControls!=null) {
+            touchControls.removeCallbacks(updateControlMode);touchControls.post(updateControlMode);
+            touchControls.removeCallbacks(updateFpsCounter);if(fpsCounterEnabled)touchControls.post(updateFpsCounter);
+        }
         boolean allowed = Build.VERSION.SDK_INT >= 30
                 ? Environment.isExternalStorageManager()
                 : checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED

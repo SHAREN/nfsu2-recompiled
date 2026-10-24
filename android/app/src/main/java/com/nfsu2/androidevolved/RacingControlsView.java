@@ -36,6 +36,9 @@ final class RacingControlsView extends View {
     private final Runnable textInput;
     private final Runnable configureTilt;
     private final Runnable configureFrameLimit;
+    private final Runnable configureFpsCounter;
+    private boolean fpsVisible;
+    private float fps;
     private String style;
     private final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint line = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -66,10 +69,10 @@ final class RacingControlsView extends View {
             area = new RectF(x, y, x+w, y+h); original=new RectF(area); this.shape=shape; this.icon=icon; this.scan=scan; this.color=color;
         }
     }
-    RacingControlsView(Context context, Keys keys, Runnable textInput, Runnable configureTilt, Runnable configureFrameLimit) {
+    RacingControlsView(Context context, Keys keys, Runnable textInput, Runnable configureTilt, Runnable configureFrameLimit, Runnable configureFpsCounter) {
         super(context); this.keys=keys; this.textInput=textInput;
         layouts=context.getSharedPreferences("touch_layouts_v1",Context.MODE_PRIVATE);
-        style=layouts.getString("style","classic");this.configureTilt=configureTilt;this.configureFrameLimit=configureFrameLimit;
+        style=layouts.getString("style","classic");this.configureTilt=configureTilt;this.configureFrameLimit=configureFrameLimit;this.configureFpsCounter=configureFpsCounter;
         setContentDescription(getContext().getString(R.string.controls_content_description));
         setHapticFeedbackEnabled(true);
         line.setStyle(Paint.Style.STROKE);line.setStrokeCap(Paint.Cap.ROUND);line.setStrokeJoin(Paint.Join.ROUND);
@@ -110,6 +113,8 @@ final class RacingControlsView extends View {
         hiddenByGamepad=connected&&!editing;
         releaseAll();
     }
+    void setFpsVisible(boolean visible){fpsVisible=visible;invalidate();}
+    void setFps(float value){fps=value;invalidate();}
     private void layoutControls() {
         releaseAll(); controls.clear();selected=null;dragPointer=-1;
         if(getWidth()==0)return;
@@ -162,7 +167,7 @@ final class RacingControlsView extends View {
 
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(hiddenByGamepad&&!editing)return;
+        if(hiddenByGamepad&&!editing){if(fpsVisible)drawFps(canvas);return;}
         canvas.save(); canvas.scale(scale,scale);
         if(editing)canvas.drawColor(0x55000000);
         for(Control c:controls)drawControl(canvas,c);
@@ -176,6 +181,16 @@ final class RacingControlsView extends View {
             drawToolbarButton(canvas,new RectF(w/2-65,70,w/2+65,106),getContext().getString(R.string.controls_toolbar_options));
         }
         canvas.restore();
+        if(fpsVisible&&!editing)drawFps(canvas);
+    }
+    private void drawFps(Canvas canvas) {
+        float d=getResources().getDisplayMetrics().density,pad=8*d,y=76*d;
+        String value=Math.round(fps)+" FPS";
+        text.setTextAlign(Paint.Align.RIGHT);text.setTextSize(15*d);text.setColor(0xF0FFFFFF);
+        float width=text.measureText(value)+pad*2,height=28*d,right=getWidth()-12*d;
+        fill.setColor(0xB0000000);canvas.drawRoundRect(right-width,y,right,y+height,8*d,8*d,fill);
+        canvas.drawText(value,right-pad,y+height/2-(text.ascent()+text.descent())/2,text);
+        text.setTextAlign(Paint.Align.CENTER);
     }
     private void drawControl(Canvas canvas,Control c) {
         boolean on=c.held>0, picked=editing&&c==selected;
@@ -339,9 +354,10 @@ final class RacingControlsView extends View {
     }
     private void showOptions() {
         new AlertDialog.Builder(getContext()).setTitle(R.string.controls_options_title)
-                .setItems(new String[]{getContext().getString(R.string.controls_option_style),getContext().getString(R.string.controls_option_tilt),getContext().getString(R.string.controls_option_fps),getContext().getString(R.string.controls_option_save_layout),getContext().getString(R.string.controls_option_load_layout)},(dialog,which)->{
+                .setItems(new String[]{getContext().getString(R.string.controls_option_style),getContext().getString(R.string.controls_option_tilt),getContext().getString(R.string.controls_option_fps),getContext().getString(R.string.controls_option_show_fps),getContext().getString(R.string.controls_option_save_layout),getContext().getString(R.string.controls_option_load_layout)},(dialog,which)->{
                     if(which==0)chooseStyle();else if(which==1)configureTilt.run();
-                    else if(which==2)configureFrameLimit.run();else if(which==3)saveNamedLayout();else loadNamedLayout();
+                    else if(which==2)configureFrameLimit.run();else if(which==3)configureFpsCounter.run();
+                    else if(which==4)saveNamedLayout();else loadNamedLayout();
                 }).setNegativeButton(R.string.common_close,null).show();
     }
     private void chooseStyle() {

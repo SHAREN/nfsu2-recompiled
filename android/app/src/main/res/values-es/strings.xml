@@ -162,6 +162,9 @@
     <string name="controls_option_style">Estilo: clásico / Xbox / PlayStation</string>
     <string name="controls_option_tilt">Conducción por inclinación</string>
     <string name="controls_option_fps">Límite de FPS</string>
+    <string name="controls_option_show_fps">Mostrar FPS</string>
+    <string name="fps_overlay_on">Activado</string>
+    <string name="fps_overlay_off">Desactivado</string>
     <string name="controls_option_save_layout">Guardar layout con nombre</string>
     <string name="controls_option_load_layout">Cargar layout personalizado</string>
     <string name="controls_style_title">Estilo de conducción</string>

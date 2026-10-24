@@ -36,6 +36,21 @@ std::unordered_map<uint32_t,Object> objects;
 // pointers of an unordered_map survive rehashing; only erasing an object
 // invalidates them, so retireGuestObject/shutdown drop this one-entry cache.
 uint32_t cachedObjectAddress=0;Object* cachedObject=nullptr;
+std::atomic<uint64_t> presentedFrames{0};
+std::atomic<int64_t> presentedWindowStartNs{0};
+std::atomic<int64_t> lastPresentedNs{0};
+std::atomic<float> presentedFps{0.f};
+int64_t steadyNowNs(){return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();}
+void notePresentedFrame(){
+    const int64_t now=steadyNowNs();lastPresentedNs=now;
+    int64_t start=presentedWindowStartNs.load();
+    if(start==0){presentedWindowStartNs=now;presentedFrames=1;return;}
+    uint64_t frames=presentedFrames.fetch_add(1)+1;
+    int64_t elapsed=now-start;
+    if(elapsed>=500000000&&presentedWindowStartNs.compare_exchange_strong(start,now)){
+        presentedFps=float(double(frames)*1000000000.0/double(elapsed));presentedFrames=0;
+    }
+}
 Object* findObject(uint32_t address){
     if(address==cachedObjectAddress&&cachedObject)return cachedObject;
     auto found=objects.find(address);if(found==objects.end())return nullptr;
@@ -138,7 +153,13 @@ void describeOriginal(uint32_t address,D3DSURFACE_DESC* desc){auto view=compress
 void setD3D9Compatibility(bool cpuTextures,unsigned backBuffers){
     forceCpuTextures=cpuTextures;configuredBackBuffers=backBuffers<1?1u:backBuffers>3?3u:backBuffers;
 }
+float d3d9PresentedFps(){
+    const int64_t last=lastPresentedNs.load();
+    if(!last||steadyNowNs()-last>1500000000)return 0.f;
+    return presentedFps.load();
+}
 void configureD3D9Bridge(void* base,uint32_t (*allocator)(uint32_t),void (*deallocator)(uint32_t)){
+    presentedFrames=0;presentedWindowStartNs=0;lastPresentedNs=0;presentedFps=0.f;
     guestBase=base;allocateGuest=allocator;freeGuest=deallocator;
 #ifdef __ANDROID__
     // android_main provides a writable private cache before creating DXVK.
@@ -205,8 +226,10 @@ uint32_t dispatchGuestD3D9(uint32_t token,const uint32_t* args,uint32_t* argumen
         if(!window||deviceResetPending)return D3DERR_DEVICELOST;
         auto source=static_cast<const RECT*>(pointer(args[1])),destination=static_cast<const RECT*>(pointer(args[2]));
         auto dirty=static_cast<const RGNDATA*>(pointer(args[4]));
-        return kind==2?static_cast<IDirect3DDevice9*>(object)->Present(source,destination,window,dirty):
+        HRESULT result=kind==2?static_cast<IDirect3DDevice9*>(object)->Present(source,destination,window,dirty):
             static_cast<IDirect3DSwapChain9*>(object)->Present(source,destination,window,dirty,args[5]);
+        if(SUCCEEDED(result))notePresentedFrame();
+        return result;
     }
     // Log the first calls of each method; tokens span 0x7e000000..0x7e00ffff.
     static uint8_t methodCalls[4096];auto& calls=methodCalls[((token-methodBase)/16)&4095];
